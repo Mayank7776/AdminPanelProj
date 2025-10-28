@@ -1,0 +1,179 @@
+<div class="userComponent px-6 py-3 bg-gray-50 min-h-screen mb-32">
+  <!-- ===== Header ===== -->
+  <div class="users-header flex items-center justify-between mb-3">
+    <div class="flex items-center text-gray-700 space-x-2 mt-4 ml-6">
+      <mat-icon class="text-blue-600 mb-[6px] mr-[-1px]">home</mat-icon>
+      <h6 class="text-lg font-semibold">/ Users</h6>
+    </div>
+
+    <button mat-raised-button *ngIf="canAdd" color="primary" class="custom-rounded-btn bg-[#334155] hover:bg-[#1e293b] text-white font-medium rounded-xl shadow-md flex items-center gap-2 px-4 py-3
+         transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 hover:shadow-lg
+         focus:ring-2 focus:ring-blue-500 focus:outline-none" (click)="openAddUserDialog()">
+      <mat-icon>person_add</mat-icon>
+      Add User
+    </button>
+  </div>
+
+  <!-- ===== Table Container ===== -->
+  <div class="bg-white rounded-lg shadow border border-gray-200 overflow-x-auto">
+    <div class="overflow-x-auto">
+      <table mat-table [dataSource]="dataSource" matSort class="min-w-full border-collapse">
+
+        <!-- Name -->
+        <ng-container matColumnDef="fullName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="centered-header">
+            Name
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center py-2 px-3 border-b text-sm text-gray-800">
+            {{element.fullName}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="f-fullName">
+          <th mat-header-cell *matHeaderCellDef class="bg-white px-2">
+            <div class="flex justify-center">
+              <mat-form-field class="!mb-[-1rem] mt-[0.3rem] w-44">
+                <mat-icon matPrefix class="text-gray-400 text-sm">search</mat-icon>
+                <input matInput [(ngModel)]="filterValues.fullName" (keyup)="onFilterChange('fullName', $event)"
+                  placeholder="Search" class="text-xs" />
+              </mat-form-field>
+            </div>
+          </th>
+        </ng-container>
+
+        <!-- Email -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="centered-header">
+            Email
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center py-2 px-3 border-b text-sm text-gray-800">
+            {{element.email}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="f-email">
+          <th mat-header-cell *matHeaderCellDef class="bg-white border-b px-2">
+            <div class="flex justify-center">
+              <mat-form-field class="!mb-[-1rem] mt-[0.3rem] w-44">
+                <mat-icon matPrefix class="text-gray-400 text-sm">search</mat-icon>
+                <input matInput [(ngModel)]="filterValues.email" (keyup)="onFilterChange('email', $event)"
+                  placeholder="Search" class="text-xs" />
+              </mat-form-field>
+            </div>
+          </th>
+        </ng-container>
+
+        <!-- Phone -->
+        <ng-container matColumnDef="phoneNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="centered-header">
+            Phone
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center py-2 px-3 border-b text-sm text-gray-800">
+            {{element.phoneNumber}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="f-phoneNumber">
+          <th mat-header-cell *matHeaderCellDef class="bg-white border-b px-2">
+            <div class="flex justify-center">
+              <mat-form-field class="!mb-[-1rem] mt-[0.3rem] w-44">
+                <mat-icon matPrefix class="text-gray-400 text-sm">search</mat-icon>
+                <input matInput [(ngModel)]="filterValues.phoneNumber" (keyup)="onFilterChange('phoneNumber', $event)"
+                  placeholder="Search" class="text-xs" />
+              </mat-form-field>
+            </div>
+          </th>
+        </ng-container>
+
+        <!-- Role -->
+        <ng-container matColumnDef="roles">
+          <th mat-header-cell *matHeaderCellDef
+            class="bg-gray-100 text-gray-700 text-xs font-semibold uppercase py-2 px-3 text-center border-b">
+            Role
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center py-2 px-3 border-b text-sm text-gray-800">
+            {{element.roles}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="f-roles">
+          <th mat-header-cell *matHeaderCellDef class="bg-white border-b px-2">
+            <div class="flex justify-center">
+              <mat-form-field class="!mb-[-1rem] mt-[0.3rem] w-44 rounded-md custom-outline">
+                <mat-icon matPrefix class="text-gray-400 text-sm">search</mat-icon>
+                <input matInput [(ngModel)]="filterValues.roles" (keyup)="onFilterChange('roles', $event)"
+                  placeholder="Search" class="text-xs" />
+              </mat-form-field>
+            </div>
+          </th>
+        </ng-container>
+
+        <!-- isActive -->
+        <ng-container matColumnDef="isActive">
+          <th mat-header-cell *matHeaderCellDef
+            class="bg-gray-100 text-gray-700 text-xs font-semibold uppercase py-2 px-3 text-center border-b">
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center px-3 border-b">
+            <span [ngClass]="element.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'"
+              class="px-2 py-1 rounded text-xs font-semibold">
+              {{element.isActive ? 'Active' : 'InActive'}}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="f-isActive">
+          <th mat-header-cell *matHeaderCellDef class="bg-white border-b px-2">
+            <div class="flex justify-center">
+              <mat-form-field class="!mb-[-1rem] mt-[0.3rem] w-44">
+                <mat-icon matPrefix class="text-gray-400 text-sm">search</mat-icon>
+                <input matInput [(ngModel)]="filterValues.isActive" (keyup)="onFilterChange('isActive', $event)"
+                  placeholder="Search" class="text-xs" />
+              </mat-form-field>
+            </div>
+          </th>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef
+            class="bg-gray-100 text-gray-700 text-xs font-semibold uppercase py-2 px-3 text-center border-b">
+            Actions
+          </th>
+          <td mat-cell *matCellDef="let element" class="text-center py-2 px-3 border-b space-x-2">
+            <button mat-icon-button *ngIf="canEdit" (click)="openEditUserDialog(element)" class="hover:bg-blue-50 rounded-full p-1">
+              <mat-icon class="text-blue-600 text-sm">edit</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="canDelete" (click)="deleteUser(element.id)" class="hover:bg-red-50 rounded-full p-1">
+              <mat-icon class="text-red-600 text-sm">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="f-actions">
+          <th mat-header-cell *matHeaderCellDef class="bg-white border-b py-1 text-center">
+            <button mat-icon-button (click)="clearColumnFilter()" class="hover:bg-gray-100 rounded-full p-1">
+              <mat-icon class="text-gray-600 text-sm">clear</mat-icon>
+            </button>
+          </th>
+        </ng-container>
+
+        <!-- Header Rows -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="filterHeaderColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-50 transition duration-150">
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- PAGINATOR BAR -->
+  <div
+    class="mt-4 bg-white border border-gray-200 rounded-lg shadow-sm px-5 py-3 flex items-center justify-between overflow-visible">
+    <!-- Left: Total Records -->
+    <div class="text-gray-700 font-medium text-sm">
+      Total Records:
+      <span class="text-indigo-600 font-semibold">{{ totalRecords }}</span>
+    </div>
+
+    <!-- Right: Paginator -->
+    <mat-paginator #paginator [length]="totalRecords" [pageSize]="pagination.pageSize" [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons class="custom-paginator">
+    </mat-paginator>
+  </div>
+</div>

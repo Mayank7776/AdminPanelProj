@@ -1,0 +1,53 @@
+<nav
+  class="fixed top-0 left-0 w-full bg-white shadow-sm px-4 sm:px-6 py-3 flex items-center justify-between z-20"
+>
+  <!-- Left side -->
+  <div class="flex items-center lg:gap-3 sm:gap-2">
+    <!-- Hamburger (mobile only) -->
+    <button
+      class="px-[2px] h-10 w-10 rounded-md hover:bg-gray-300"
+      (click)="toggleSidebar.emit()"
+    >
+      <i class="fa-solid fa-bars text-gray-700 text-lg"></i>
+    </button>
+
+    <!-- App name -->
+    <h1 class="text-lg sm:text-xl font-semibold text-gray-800">
+      Memo Panel
+    </h1>
+  </div>
+
+  <!-- Right side -->
+  <div class="relative profile-menu">
+    <button
+      class="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 transition"
+      (click)="profileOpen = !profileOpen"
+    >
+      <i class="fa-solid fa-user text-gray-700 text-lg"></i>
+      <span
+        class="hidden sm:inline-block text-gray-700 font-medium text-sm sm:text-base"
+      >
+      {{userName | titlecase}}
+      </span>
+      <i
+        class="fa-solid fa-chevron-down text-gray-500 text-xs sm:text-sm"
+      ></i>
+    </button>
+
+    <!-- Dropdown -->
+     @if(profileOpen){
+       <div
+         class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border border-gray-300"
+       >
+         <div class="px-4 py-2 border-b border-gray-100 text-sm text-gray-600" routerLink="users">
+          User: {{userName | titlecase}}
+         </div>
+         <button
+           class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-50 text-gray-700" (click)="logOut()"
+         >
+           Logout
+         </button>
+       </div>
+     }
+  </div>
+</nav>

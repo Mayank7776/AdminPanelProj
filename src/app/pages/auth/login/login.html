@@ -1,0 +1,45 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Admin Login</h2>
+    <p class="subtitle">Sign in to access your admin dashboard</p>
+
+    <form (submit)="login(); $event.preventDefault()">
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+   <div class="password-container" style="position: relative;">
+  <input
+    [type]="showPassword ? 'text' : 'password'"
+    placeholder="Password"
+    [(ngModel)]="password"
+    name="password"
+    required
+    style="padding-right: 35px;"
+  >
+  <i
+    class="fa-solid"
+    [ngClass]="showPassword ? 'fa-eye' :'fa-eye-slash' "
+    (click)="showPassword = !showPassword"
+    style="
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+    "
+  ></i>
+</div>
+
+      <button type="submit" [disabled]="isLoading" class="buttonb">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
+
+      @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+      }
+
+      <div class="forgot-password">
+        <a routerLink="/forgot-password">Forgot your password?</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,345 @@
+<div class="p-6 bg-white rounded-3xl shadow-2xl w-full max-w-[850px] mx-auto overflow-auto border-2 border-gray-100">
+  <!-- Header with Shaped Background -->
+  <div
+    class="mb-2 text-center bg-gradient-to-r from-gray-50 to-gray-100 py-3 px-5 rounded-2xl border-2 border-gray-200">
+    <h2 class="text-xl font-bold text-gray-800 inline-block">
+      {{ data ? 'Edit User' : 'Add New User' }}
+    </h2>
+  </div>
+
+  <form [formGroup]="userForm" (ngSubmit)="save()" class="grid grid-cols-2 gap-x-6 gap-y-1">
+
+    <!-- Full Name -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Full Name
+      </label>
+      <input formControlName="FullName"
+        class="w-full border-2 border-gray-300 p-2 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400"
+        placeholder="Enter full name" />
+      <div *ngIf="userForm.get('FullName')?.touched && userForm.get('FullName')?.invalid" class="mt-1.5 space-y-1">
+        <span *ngIf="userForm.get('FullName')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Full Name is required.
+        </span>
+        <span *ngIf="userForm.get('FullName')?.errors?.['minlength']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Minimum 2 characters required.
+        </span>
+        <span *ngIf="userForm.get('FullName')?.errors?.['maxlength']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Maximum 50 characters allowed.
+        </span>
+        <span *ngIf="userForm.get('FullName')?.errors?.['pattern']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Only letters and spaces allowed.
+        </span>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Email
+      </label>
+      <input formControlName="Email" type="email"
+        class="w-full border-2 border-gray-300 p-2 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400"
+        placeholder="Enter email" />
+      <div *ngIf="userForm.get('Email')?.touched && userForm.get('Email')?.invalid" class="mt-1.5 space-y-1">
+        <span *ngIf="userForm.get('Email')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Email is required.
+        </span>
+        <span *ngIf="userForm.get('Email')?.errors?.['email']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Invalid email format.
+        </span>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div *ngIf="!isEditMode" class="relative">
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Password
+      </label>
+      <input [type]="showPassword ? 'text' : 'password'" formControlName="Password"
+        class="w-full border-2 border-gray-300 p-2 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none pr-10 transition-all duration-200 hover:border-gray-400"
+        placeholder="Admin@123....">
+      <!-- Eye icon with circular background -->
+      <div
+        class="absolute right-2 top-[50px] transform -translate-y-1/2 cursor-pointer rounded-full p-1.5 transition-all duration-200"
+        (click)="showPassword = !showPassword">
+        <i class="fa-solid text-gray-600 text-xs" [ngClass]="showPassword ?'fa-eye' : 'fa-eye-slash'"></i>
+      </div>
+      <div *ngIf="userForm.get('Password')?.touched && userForm.get('Password')?.invalid" class="mt-1.5 space-y-1">
+        <span *ngIf="userForm.get('Password')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Password is required.
+        </span>
+        <span *ngIf="userForm.get('Password')?.errors?.['minlength']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Minimum 8 characters required.
+        </span>
+        <span *ngIf="userForm.get('Password')?.errors?.['maxlength']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Maximum 50 characters allowed.
+        </span>
+        <span *ngIf="userForm.get('Password')?.errors?.['pattern']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Password must contain uppercase, lowercase, number, and special character.
+        </span>
+
+      </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="col-span-1">
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Phone Number
+      </label>
+      <div class="w-full">
+        <ngx-intl-tel-input
+          [cssClass]="'w-[359px] border-2 border-gray-300 h-[42px] text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400'"
+          [preferredCountries]="['us','gb']" [enableAutoCountrySelect]="true" [enablePlaceholder]="true"
+          [searchCountryFlag]="true" [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+          [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.India" [maxLength]="15" [minlength]="10"
+          [phoneValidation]="true" [separateDialCode]="true" name="phone" formControlName="PhoneNumber"
+          placeholder="Enter phone number">
+        </ngx-intl-tel-input>
+
+      </div>
+
+      <!-- Validation Errors -->
+      <div *ngIf="userForm.get('PhoneNumber')?.touched && userForm.get('PhoneNumber')?.invalid"
+        class="mt-1.5 space-y-1">
+        <span *ngIf="!isEditMode && userForm.get('PhoneNumber')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Phone number is required.
+        </span>
+        <span *ngIf="userForm.get('PhoneNumber')?.errors?.['minlength']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Must be at least 10 digits.
+        </span>
+        <span *ngIf="userForm.get('PhoneNumber')?.errors?.['maxlength']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Cannot exceed 15 digits.
+        </span>
+      </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Date of Birth
+      </label>
+      <input type="date" formControlName="DateOfbirth" [max]="maxDate"
+        class="w-full border-2 border-gray-300 p-2 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400" />
+      <div *ngIf="!isEditMode && userForm.get('DateOfbirth')?.touched && userForm.get('DateOfbirth')?.invalid"
+        class="mt-1.5">
+        <span *ngIf="userForm.get('DateOfbirth')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Date of Birth is required.
+        </span>
+      </div>
+    </div>
+
+    <!-- Role Searchable Dropdown -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Role
+      </label>
+      <div class="relative">
+        <input type="text" [(ngModel)]="roleSearchTerm" [ngModelOptions]="{standalone: true}"
+          (focus)="showRoleDropdown = true" (blur)="onRoleBlur()" (input)="filterRoles()"
+          placeholder="Search and select role"
+          class="w-full border-2 border-gray-300 p-2 pr-9 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400 bg-white" />
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+        <div *ngIf="showRoleDropdown && filteredRoles.length > 0"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl max-h-48 overflow-y-auto">
+          <div *ngFor="let r of filteredRoles" (mousedown)="selectRole(r)"
+            class="p-2 text-sm hover:bg-blue-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 first:rounded-t-2xl last:rounded-b-2xl">
+            {{ r.name }}
+          </div>
+        </div>
+        <div *ngIf="showRoleDropdown && filteredRoles.length === 0 && roleSearchTerm"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl p-3 text-gray-500 text-xs text-center">
+          No roles found
+        </div>
+      </div>
+      <div *ngIf="!isEditMode && userForm.get('Role')?.touched && userForm.get('Role')?.invalid" class="mt-1.5">
+        <span *ngIf="userForm.get('Role')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Role is required.
+        </span>
+      </div>
+    </div>
+
+    <!-- Country Searchable Dropdown -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Country
+      </label>
+      <div class="relative">
+        <input type="text" [(ngModel)]="countrySearchTerm" [ngModelOptions]="{standalone: true}"
+          (focus)="showCountryDropdown = true" placeholder="Search and select country"
+          class="w-full border-2 border-gray-300 p-2 pr-9 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400" />
+
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+
+        <div *ngIf="showCountryDropdown && filteredCountries.length > 0"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl max-h-48 overflow-y-auto">
+          <div *ngFor="let c of filteredCountries" (mousedown)="selectCountry(c)"
+            class="p-2 text-sm hover:bg-blue-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 first:rounded-t-2xl last:rounded-b-2xl">
+            {{ c.name }}
+          </div>
+        </div>
+
+        <div *ngIf="showCountryDropdown && filteredCountries.length === 0 && countrySearchTerm"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl p-3 text-gray-500 text-xs text-center">
+          No countries found
+        </div>
+      </div>
+
+      <div *ngIf="userForm.get('CountryId')?.touched && userForm.get('CountryId')?.invalid" class="mt-1.5">
+        <span *ngIf="userForm.get('CountryId')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          Country is required.
+        </span>
+      </div>
+    </div>
+
+    <!-- State Searchable Dropdown -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        State
+      </label>
+      <div class="relative">
+        <input type="text" [(ngModel)]="stateSearchTerm" [ngModelOptions]="{standalone: true}"
+          (focus)="showStateDropdown = true" placeholder="Search and select state"
+          [disabled]="!userForm.get('CountryId')?.value"
+          class="w-full border-2 border-gray-300 p-2 pr-9 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 hover:border-gray-400 bg-white" />
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+        <div *ngIf="showStateDropdown && filteredStates.length > 0"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl max-h-48 overflow-y-auto">
+          <div *ngFor="let s of filteredStates" (mousedown)="selectState(s)"
+            class="p-2 text-sm hover:bg-blue-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 first:rounded-t-2xl last:rounded-b-2xl">
+            {{ s.name }}
+          </div>
+        </div>
+        <div *ngIf="showStateDropdown && filteredStates.length === 0 && stateSearchTerm"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl p-3 text-gray-500 text-xs text-center">
+          No states found
+        </div>
+      </div>
+      <div *ngIf="userForm.get('StateId')?.touched && userForm.get('StateId')?.invalid" class="mt-1.5">
+        <span *ngIf="userForm.get('StateId')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          State is required.
+        </span>
+      </div>
+    </div>
+
+    <!-- City Searchable Dropdown -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        City
+      </label>
+      <div class="relative">
+        <input type="text" [(ngModel)]="citySearchTerm" [ngModelOptions]="{standalone: true}"
+          (focus)="showCityDropdown = true" placeholder="Search and select city"
+          [disabled]="!userForm.get('StateId')?.value"
+          class="w-full border-2 border-gray-300 p-2 pr-9 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none disabled:bg-gray-100 disabled:cursor-not-allowed transition-all duration-200 hover:border-gray-400 bg-white" />
+        <div class="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+        <div *ngIf="showCityDropdown && filteredCities.length > 0"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl max-h-48 overflow-y-auto">
+          <div *ngFor="let c of filteredCities" (mousedown)="selectCity(c)"
+            class="p-2 text-sm hover:bg-blue-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0 first:rounded-t-2xl last:rounded-b-2xl">
+            {{ c.name }}
+          </div>
+        </div>
+        <div *ngIf="showCityDropdown && filteredCities.length === 0 && citySearchTerm"
+          class="absolute z-10 w-full mt-1 bg-white border-2 border-gray-300 rounded-2xl shadow-2xl p-3 text-gray-500 text-xs text-center">
+          No cities found
+        </div>
+      </div>
+      <div *ngIf="userForm.get('CityId')?.touched && userForm.get('CityId')?.invalid" class="mt-1.5">
+        <span *ngIf="userForm.get('CityId')?.errors?.['required']"
+          class="text-red-600 text-[10px] block bg-red-50 px-2 py-0.5 rounded-full border border-red-200">
+          City is required.
+        </span>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <label
+        class="block mb-1.5 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Status
+      </label>
+      <select formControlName="isActive"
+        class="w-full border-2 border-gray-300 p-2 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400 bg-white">
+        <option [value]="true">Active</option>
+        <option [value]="false">InActive</option>
+      </select>
+    </div>
+
+    <!-- Profile Image -->
+    <div class="col-span-2">
+      <label class="block mb-2 font-semibold text-gray-700 text-xs bg-gray-50 inline-block px-2.5 py-0.5 rounded-full">
+        Profile Image
+      </label>
+
+      <!-- File input: shown only when no preview -->
+      <input *ngIf="!previewUrl" type="file" (change)="onFileSelected($event)" accept="image/*"
+        class="w-full border-2 border-gray-300 p-2 text-sm rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 focus:outline-none transition-all duration-200 hover:border-gray-400 file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:bg-gray-100 file:text-gray-700 file:font-semibold hover:file:bg-gray-200 file:cursor-pointer" />
+
+      <!-- Image preview with cross button -->
+      <div *ngIf="previewUrl" class="mt-3 relative w-24 h-24 mx-auto">
+        <img [src]="previewUrl" alt="Preview"
+          class="w-24 h-24 rounded-full object-cover shadow-lg border-4 border-gray-200" />
+        <!-- Cross button with enhanced styling -->
+        <button type="button" (click)="removePreview()"
+          class="absolute -top-1 -right-1 pb-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-lg hover:bg-red-600 transition-all duration-200 hover:scale-110 border-2 border-white font-bold text-sm">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="col-span-2 flex justify-end gap-3 mt-5 pt-4 border-t-2 border-gray-100">
+      <button type="button" (click)="close()"
+        class="px-6 py-2 text-sm border-2 border-gray-300 rounded-2xl text-gray-700 font-semibold hover:bg-gray-100 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
+        Cancel
+      </button>
+      <button type="submit"
+        class="px-6 py-2 text-sm bg-[#334155] text-white font-semibold rounded-2xl hover:bg-[#1e293b] transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5">
+        Save
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,17 @@
+<div class="h-screen w-screen overflow-hidden flex flex-col">
+  <!-- Navbar -->
+  <app-navbar (toggleSidebar)="toggleSidebar()" class="w-full flex-shrink-0"></app-navbar>
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <app-sidebar [isCollapsed]="Open" class="flex-shrink-0"></app-sidebar>
+
+    <!-- Main content -->
+    <main class="flex-1 overflow-auto pt-22 transition-all duration-300 ease-in-out bg-gray-50" [ngClass]="{
+        'ml-[300px]': !Open,
+        'ml-20': Open 
+      }">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<aside class="fixed left-0 h-full mt-19
+         transition-all duration-300 ease-in-out z-10 flex flex-col bg-[#1E293B] text-white shadow-lg" [ngClass]="{
+    'sm:w-[100px] md:w-[280px] lg:w-[300px]': !isCollapsed,
+    'w-20': isCollapsed
+  }">
+  <!-- Role Container -->
+  <div routerLink="dashboard"
+    class="flex items-center mt-4 h-12 rounded-lg mx-3 bg-[#334155] transition-all duration-300 ease-in-out"
+    [ngClass]="{ 'justify-start px-4': !isCollapsed, 'ml-6 pl-3.5 pt-[2px]': isCollapsed }">
+    <img src="{{userImage}}" alt="" class="h-8 w-8 ml-[-6px] transition-all duration-300 ease-in-out border border-gray-300 rounded-full">
+    <span class="ml-4 text-sm font-medium transition-opacity duration-200"
+      [ngClass]="{ 'opacity-0 pointer-events-none': isCollapsed }">
+      {{userRole | titlecase}}
+    </span>
+  </div>
+
+  <!-- Centered Menu -->
+  <nav class="flex flex-col mt-4 justify-center space-y-2">
+
+    <a *ngIf="['Admin','Manager','Developer'].includes(userRole)" routerLink="dashboard"
+       class="flex h-12 rounded-lg mx-3 bg-[#334155] transition-all duration-300 ease-in-out text-white !no-underline"
+       [ngClass]="{ 'justify-start px-4 pt-[14px]': !isCollapsed, 'ml-6 pl-3.5 pt-[13px]': isCollapsed }">
+      <i class="fa-solid fa-chart-line text-xl w-6 text-center transition-all duration-300 ease-in-out !no-underline"></i>
+      <span class="ml-4 text-sm font-medium transition-opacity duration-200"
+            [ngClass]="{ 'opacity-0 pointer-events-none': isCollapsed }">
+        Dashboard
+      </span>
+    </a>
+
+    <a *ngIf="['Admin','Manager'].includes(userRole)" routerLink="users"
+       class="flex h-12 rounded-lg mx-3 bg-[#334155] transition-all duration-300 ease-in-out text-white !no-underline"
+       [ngClass]="{ 'justify-start px-4 pt-[14px]': !isCollapsed, 'ml-6 pl-3.5 pt-[13px]': isCollapsed }">
+      <i class="fa-solid fa-users text-xl w-6 text-center transition-all duration-300 ease-in-out"></i>
+      <span class="ml-4 text-sm font-medium transition-opacity duration-200"
+            [ngClass]="{ 'opacity-0 pointer-events-none': isCollapsed }">
+        Users
+      </span>
+    </a>
+
+    <a *ngIf="['Admin','Manager'].includes(userRole)" routerLink="roles"
+       class="flex h-12 rounded-lg mx-3 bg-[#334155] transition-all duration-300 ease-in-out text-white !no-underline"
+       [ngClass]="{ 'justify-start px-4 pt-[14px]': !isCollapsed, 'ml-6 pl-3.5 pt-[13px]': isCollapsed }">
+      <i class="fa-solid fa-user-shield text-xl w-6 text-center transition-all duration-300 ease-in-out"></i>
+      <span class="ml-4 text-sm font-medium transition-opacity duration-200"
+            [ngClass]="{ 'opacity-0 pointer-events-none': isCollapsed }">
+        Roles
+      </span>
+    </a>
+
+    <a *ngIf="['Admin','Manager','Developer'].includes(userRole)" routerLink="cms"
+       class="flex h-12 rounded-lg mx-3 bg-[#334155] transition-all duration-300 ease-in-out text-white !no-underline"
+       [ngClass]="{ 'justify-start px-4 pt-[14px]': !isCollapsed, 'ml-6 pl-3.5 pt-[13px]': isCollapsed }">
+      <i class="fa-solid fa-file-lines text-xl w-6 text-center transition-all duration-300 ease-in-out"></i>
+      <span class="ml-4 text-sm font-medium transition-opacity duration-200"
+            [ngClass]="{ 'opacity-0 pointer-events-none': isCollapsed }">
+        CMS
+      </span>
+    </a>
+
+    <a *ngIf="['Admin','Manager','OnlyFAQ','Developer'].includes(userRole)" routerLink="faq"
+       class="flex h-12 rounded-lg mx-3 bg-[#334155] transition-all duration-300 ease-in-out text-white !no-underline"
+       [ngClass]="{ 'justify-start px-4 pt-[14px]': !isCollapsed, 'ml-6 pl-3.5 pt-[13px]': isCollapsed }">
+      <i class="fa-solid fa-circle-question text-xl w-6 text-center transition-all duration-300 ease-in-out"></i>
+      <span class="ml-4 text-sm font-medium transition-opacity duration-200"
+            [ngClass]="{ 'opacity-0 pointer-events-none': isCollapsed }">
+        FAQ
+      </span>
+    </a>
+
+  </nav>
+</aside>
